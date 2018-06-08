@@ -87,6 +87,20 @@ public class JsonDiffTest {
     }
 
     @Test
+    public void newPOCTest() {
+        JsonNode source = jsonNode.get(jsonNode.size()-1).get("first");
+        JsonNode target = jsonNode.get(jsonNode.size()-1).get("second");
+        System.out.println(source);
+        System.out.println(target);
+
+        System.out.println("\n--------Diff--------");
+        JsonNode diff = JsonDiff.asJson(source, target);
+        for (JsonNode node: diff) {
+            System.out.println(node);
+        }
+    }
+
+    @Test
     public void testRenderedRemoveOperationOmitsValueByDefault() throws Exception {
         ObjectNode source = objectMapper.createObjectNode();
         ObjectNode target = objectMapper.createObjectNode();

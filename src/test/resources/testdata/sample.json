@@ -1569,5 +1569,9 @@
     {
         "first":{"map":{"3000000000": {"field":3100000000,"otherField": 0}}},
         "second":{"map":{"3000000000": {"field":3100000000,"otherField": 0, "extraField" : 0}}}
+    },
+    {
+        "first": {"id" : "1", "name": "Alice", "address1": "130 Concord", "phone": ["911", "514-266-3912"]},
+        "second": {"id" : "2", "name": "Bob", "address1": "1600 Pennsylvania", "phone": ["892-321-4567", "911", "newNumber"]}
     }
 ]

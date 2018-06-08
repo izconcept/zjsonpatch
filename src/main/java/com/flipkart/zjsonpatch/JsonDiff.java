@@ -321,7 +321,7 @@ public final class JsonDiff {
 
             if (sourceType == NodeType.ARRAY && targetType == NodeType.ARRAY) {
                 //both are arrays
-                compareArray(diffs, path, source, target);
+				compareArrayQuadratic(diffs, path, source, target);
             } else if (sourceType == NodeType.OBJECT && targetType == NodeType.OBJECT) {
                 //both are json
                 compareObjects(diffs, path, source, target);
@@ -332,6 +332,33 @@ public final class JsonDiff {
             }
         }
     }
+
+    private static void compareArrayQuadratic(List<Diff> diffs, List<Object> path, JsonNode source, JsonNode target) {
+    	int i = 0;
+    	while (i < Math.min(source.size(), target.size())) {
+			JsonNode srcNode = source.get(i);
+			JsonNode targetNode = target.get(i);
+			List<Object> currPath = getPath(path, i);
+			if (!srcNode.equals(targetNode)) {
+				generateDiffs(diffs, currPath, srcNode, targetNode);
+			}
+    		i++;
+		}
+		if (source.size() < target.size()) {
+    		for (int j = source.size(); j < target.size(); j++) {
+				JsonNode targetNode = target.get(j);
+				List<Object> currPath = getPath(path, j);
+    			diffs.add(Diff.generateDiff(Operation.ADD, currPath, targetNode));
+			}
+		}
+		else if (source.size() > target.size()) {
+			for (int j = target.size(); j < source.size(); j++) {
+				JsonNode targetNode = target.get(j);
+				List<Object> currPath = getPath(path, j);
+				diffs.add(Diff.generateDiff(Operation.REMOVE, currPath, targetNode));
+			}
+		}
+	}
 
     private static void compareArray(List<Diff> diffs, List<Object> path, JsonNode source, JsonNode target) {
         List<JsonNode> lcs = getLCS(source, target);
